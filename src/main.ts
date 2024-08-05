@@ -26,6 +26,6 @@ async function bootstrap() {
 
   await app.listen(envs.port);
 
-  logger.log('running on port 3000')
+  logger.log('CLIENT-GATEWAY running on port 3000')
 }
 bootstrap();

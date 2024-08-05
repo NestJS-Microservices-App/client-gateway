@@ -11,7 +11,16 @@ export class RpcCustomExceptionFilter implements ExceptionFilter{
         const ctx = host.switchToHttp()
         const response = ctx.getResponse();
 
-        const rpcError = exception.getError()
+        const rpcError = exception.getError();
+
+        //condicion para atrapar un filtro de error 500
+        if(rpcError.toString().includes('Empty respone')){
+            return response.status(500).json({
+                status: 500,
+                //toma todo el mensaje de string hasta que aparezca un parentesis y lo elimina, dejando solo el msj
+                message: rpcError.toString().substring(0,rpcError.toString().indexOf('(') - 1)
+            })
+        }
 
         if(typeof rpcError === 'object' && 'status' in rpcError && 'message' in rpcError){
             const status = rpcError.status;
